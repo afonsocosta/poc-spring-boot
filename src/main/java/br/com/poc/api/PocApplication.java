@@ -2,8 +2,6 @@ package br.com.poc.api;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,17 +9,9 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import br.com.poc.api.security.entity.Usuario;
-import br.com.poc.api.security.enums.PerfilEnum;
-import br.com.poc.api.security.repository.UsuarioRepository;
-import br.com.poc.api.util.SenhaUtils;
-
 @SpringBootApplication
 public class PocApplication {
 	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-
 	public static void main(String[] args) {
 		SpringApplication.run(PocApplication.class, args);
 	}
