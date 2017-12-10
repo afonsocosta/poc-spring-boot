@@ -1,7 +1,5 @@
 package br.com.poc.api.dto;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CPF;
@@ -23,8 +21,8 @@ public class ClienteDTO {
 	@CPF
 	private String cpf;
 	
-	@UniqueRecord(method = "findByNome", repository = ClienteRepository.class)
-	private String teste;
+//	@UniqueRecord(method = "findByNome", repository = ClienteRepository.class)
+//	private String teste;
 
 	public Long getId() {
 		return id;
@@ -50,13 +48,13 @@ public class ClienteDTO {
 		this.cpf = cpf;
 	}
 
-	public String getTeste() {
-		return teste;
-	}
-
-	public void setTeste(String teste) {
-		this.teste = teste;
-	}
+//	public String getTeste() {
+//		return teste;
+//	}
+//
+//	public void setTeste(String teste) {
+//		this.teste = teste;
+//	}
 
 	@Override
 	public String toString() {

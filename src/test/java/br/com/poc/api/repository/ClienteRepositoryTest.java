@@ -45,19 +45,19 @@ public class ClienteRepositoryTest {
 	}
 	
 	@Test
-	public void shouldFindByCPF(){
+	public void shouldTestFindByCPF(){
 		Cliente cliente = clienteRepository.findByCpf(CPF+"0");
 		assertEquals(CPF+"0", cliente.getCpf());
 	}
 	
 	@Test
-	public void shouldFindAll(){
+	public void shouldTestFindAll(){
 		List<Cliente> clientes = clienteRepository.findAll();
 		assertEquals(10, clientes.size());
 	}
 	
 	@Test
-	public void shouldFindAllPageble(){
+	public void shouldTestFindAllPageble(){
 		PageRequest page = new PageRequest(0, 5);
 		Page<Cliente> clientes = clienteRepository.findAll(page);
 		assertEquals(5, clientes.getContent().size());

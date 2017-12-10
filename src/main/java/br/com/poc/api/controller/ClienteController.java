@@ -1,19 +1,17 @@
 package br.com.poc.api.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.Valid;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,40 +35,38 @@ public class ClienteController extends BaseController{
 	private ClienteService clienteService;
 
 	@CrossOrigin
-	@PostMapping
+	@GetMapping
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	/*@PreAuthorize("hasAnyRole('ADMIN')")*/
-	public List<ClienteDTO> findAll(@Valid @RequestBody ClienteDTO clienteDTO) throws PocApiException{
-		Cliente cliente = new Cliente();
-		cliente.setCpf("123456789809");
-		cliente.setNome("testando");
-		List<Cliente> cliens = new ArrayList<Cliente>();
-		cliens.add(cliente);
-		cliens.add(cliente);
-		cliens.add(cliente);
-		final List<ClienteDTO> result = (List<ClienteDTO>) modelMapper.map(cliens, ArrayList.class);
+	public Page<ClienteDTO> findAll() throws PocApiException{
+		PageRequest pageRequest = new PageRequest(0, 10, Direction.DESC, "id");
+		
+		Page<Cliente> clientes = clienteService.findAll(pageRequest);
+		Page<ClienteDTO> clientesDTO = clientes.map(cliente -> (ClienteDTO) buildDTO(cliente, ClienteDTO.class));
 		//throw new PocApiException(ApiExceptionMessage.INVALID_TOKEN);
-		return result;
+		return clientesDTO;
 		
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "/findByName")
+	@GetMapping(value = "/name/{name}")
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public ClienteDTO findByNome(){
-		Cliente cliente = clienteService.findByName();
-		return (ClienteDTO) buildDTO(cliente, ClienteDTO.class);
+	
+	public ClienteDTO findByNome(@PathVariable("name") String name){
+		Optional<Cliente> cliente = clienteService.findByName(name);
+		return (ClienteDTO) buildDTO(cliente.get(), ClienteDTO.class);
 	}
 	
 	@CrossOrigin
-	@GetMapping(value = "/findByCpf")
+	@GetMapping(value = "/cpf/{cpf}")
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public ClienteDTO findByCpf(){
-		Cliente cliente = clienteService.findByCpf();
-		return (ClienteDTO) buildDTO(cliente, ClienteDTO.class);
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ClienteDTO findByCpf(@PathVariable("cpf") String cpf){
+		Optional<Cliente> cliente = clienteService.findByCpf(cpf);
+		return (ClienteDTO) buildDTO(cliente.get(), ClienteDTO.class);
 	}
 	
 }

@@ -1,34 +1,37 @@
 package br.com.poc.api.service;
 
-import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import br.com.poc.api.entity.Cliente;
-import br.com.poc.api.repository.ClienteRepository;
 
-@Service
-public class ClienteService {
-	
-	
-	@Autowired
-	private ClienteRepository clienteRepository;
+public interface ClienteService {
 
-	@SuppressWarnings("unchecked")
-	public List<Cliente> findAll(Pageable pageable) {
-		List<Cliente> findAll = (List<Cliente>) clienteRepository.findAll(pageable);
-		return findAll;
-	}
 	
-	public Cliente findByName(){
-		return clienteRepository.customMethod("Afonso");
-	}
-	
-	public Cliente findByCpf(){
-		return clienteRepository.findByCpf("12345678909");
-	}
-	
-	
+	/**
+	 * Retorna uma lista paginada de todos os clientes
+	 * 
+	 * @param pageable
+	 * @return List<Cliente>
+	 */
+	Page<Cliente> findAll(Pageable pageable);
+
+	/**
+	 * Retorna um cliente por nome
+	 * 
+	 * @param name
+	 * @return Optional<Cliente> 
+	 */
+	Optional<Cliente> findByName(String name);
+
+	/**
+	 * Retorna um cliente por cpf
+	 * 
+	 * @param cpf
+	 * @return Optional<Cliente> 
+	 */
+	Optional<Cliente> findByCpf(String cpf);
+
 }
