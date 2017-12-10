@@ -2,8 +2,8 @@ package br.com.poc.api.controller;
 
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.poc.api.controller.base.BaseController;
 import br.com.poc.api.dto.ClienteDTO;
+import br.com.poc.api.dto.PageDTO;
 import br.com.poc.api.entity.Cliente;
 import br.com.poc.api.exception.PocApiException;
 import br.com.poc.api.service.ClienteService;
@@ -29,18 +30,18 @@ public class ClienteController extends BaseController{
 	
 	
 	@Autowired
-    private ModelMapper modelMapper;
-	
-	@Autowired
 	private ClienteService clienteService;
+	
+	@Value("${page.size}")
+	private int pageSize;
 
 	@CrossOrigin
 	@GetMapping
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	/*@PreAuthorize("hasAnyRole('ADMIN')")*/
-	public Page<ClienteDTO> findAll() throws PocApiException{
-		PageRequest pageRequest = new PageRequest(0, 10, Direction.DESC, "id");
+	public Page<ClienteDTO> findAll(PageDTO pageDTO) throws PocApiException{
+		PageRequest pageRequest = pageDTO.getPageRequest(pageSize);
 		
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 		Page<ClienteDTO> clientesDTO = clientes.map(cliente -> (ClienteDTO) buildDTO(cliente, ClienteDTO.class));
