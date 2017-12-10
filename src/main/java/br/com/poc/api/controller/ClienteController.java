@@ -39,7 +39,7 @@ public class ClienteController extends BaseController{
 	@GetMapping
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	/*@PreAuthorize("hasAnyRole('ADMIN')")*/
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public Page<ClienteDTO> findAll(PageDTO pageDTO) throws PocApiException{
 		PageRequest pageRequest = pageDTO.getPageRequest(pageSize);
 		
