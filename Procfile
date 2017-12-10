@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.procfiles.active=prod -jar target/poc-0.0.1-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/poc-0.0.1-SNAPSHOT.jar
